@@ -30,7 +30,7 @@ public class Top1000<T extends Comparable<T>> {
 //        synchronized (income)
         if (incomeStoredList.isEmpty()
                 || income.compareTo(Collections.max(incomeStoredList)) > 0) {
-            System.out.println("income = " + income);
+            System.out.println(Thread.currentThread().getName() + " : income = " + income);
             incomeStoredList.add(income);
         }
 
@@ -45,15 +45,31 @@ public class Top1000<T extends Comparable<T>> {
     @SneakyThrows
     public synchronized List<T> getTop() {
 
-        while (incomeStoredList.size() < MAX_COUNT_IN_TOP) {
+        /*if (incomeStoredList.size() < MAX_COUNT_IN_TOP) {
             System.out.println("I'm sleeping. ActualStored = " + incomeStoredList.size());
 //            Thread.sleep(1000);
             wait();
-        }
+        }*/
 
         resizeToMaxCountInTop();
+        System.out.println(Thread.currentThread().getName() + " : I notify to ALL! IncomeStoredList has returned with size= " + incomeStoredList.size());
+        notifyAll();
 
         return incomeStoredList;
+    }
+
+    @SneakyThrows
+    public List<T> getTopFromList() {
+        if (incomeStoredList.size() < MAX_COUNT_IN_TOP) {
+            System.out.println("I'm sleeping. ActualStored = " + incomeStoredList.size());
+
+            synchronized (incomeStoredList) {
+                System.out.println(Thread.currentThread().getName() + " : I'm waiting...");
+                incomeStoredList.wait();
+            }
+        }
+
+        return getTop();
     }
 
     private synchronized void resizeToMaxCountInTop() {

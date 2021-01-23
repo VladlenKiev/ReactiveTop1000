@@ -62,6 +62,45 @@ class Top1000Test {
         assertEquals(EXPECTED_SEQUENCE_ARRAYS, top1000.getTop());
     }
 
+    @DisplayName(" getTop is waiting in another Thread when Array has less max count ")
+    @Test
+    void getTop_inAnotherThreadWhenArrayHasLessThenMaxCountInTop() throws InterruptedException {
+        for (int i = 0; i < EXPECTED_MAX_COUNT_IN_TOP-1; i++)
+            top1000.onEvent(i);
+
+        Thread thread1 = new Thread(() -> {
+            while (top1000.getTopFromList() != null)
+                System.out.println(" Attempt! from thread = " + Thread.currentThread().getName());
+            try {
+                Thread.sleep(2000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            System.out.println("Result from thread1 = ");
+
+        });
+
+        Thread thread2 = new Thread(() -> {
+            while (top1000.getTopFromList() != null)
+                System.out.println(" Attempt! from thread = " + Thread.currentThread().getName());
+            try {
+                Thread.sleep(2000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            System.out.println("Result from thread2 = ");
+
+        });
+
+        thread1.start();
+        thread2.start();
+
+        Thread.sleep(10000);
+
+        top1000.onEvent(9);
+        assertEquals(EXPECTED_SEQUENCE_ARRAYS, top1000.getTop());
+    }
+
     @DisplayName(" getTop is clearing data above max count in top ")
     @Test
     void getTop_clearDataWhenArrayHasAboveData() throws InterruptedException {
