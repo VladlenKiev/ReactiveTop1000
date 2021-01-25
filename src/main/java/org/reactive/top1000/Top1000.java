@@ -21,7 +21,7 @@ public class Top1000<T extends Comparable<T>> {
      * Would be called in case of incoming element.
      * One incoming element would be passed as argument
      *
-     * aserobaba@luxoft.com
+     * aserobaba@lt.com
      */
     //threadsafe (few calling) - case: T1 calls onEvent, T2 - getTop
     public synchronized void onEvent(T income) {
