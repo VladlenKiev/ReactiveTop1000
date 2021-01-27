@@ -28,9 +28,9 @@ public class Client {
     @SneakyThrows
     public void subscribeToEmitterFromGenerator() {
 
-        PublishSubject<String> subject = PublishSubject.create();
+//        PublishSubject<String> subject = PublishSubject.create();
         Observable<String> obs = Generator.magicPublisher();
-        obs.subscribe(System.out::println);
+//        obs.subscribe(System.out::println);
 //        final Observable<String> ob = Generator.magicPublisher();
 //        System.out.println("First subscribed");
 //        ob.subscribe(System.out::println);

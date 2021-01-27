@@ -32,7 +32,7 @@ public class Generator {
                 .concatMap(s -> Observable.just(s).delay(randomDelay.nextInt(1000), TimeUnit.MILLISECONDS))
                 .subscribeOn(Schedulers.newThread());
 
-        //Он сразу подписывается и обсервебл тановится горячим! Без этого он бдует холодный!
+        //Он сразу подписывается и обсервебл становится горячим! Без этого он будет холодный!
 
         PublishSubject<String> subject = PublishSubject.create();
         obs.subscribe(subject);
